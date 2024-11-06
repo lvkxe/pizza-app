@@ -1,17 +1,124 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const pizzaData = [
+  {
+    name: "Spinach Pizza",
+    ingredients: "Tomato, mozzarella, spinach, and ricotta cheese",
+    price: 12,
+    image: "pizzas/spinaci.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Margherita Pizza",
+    ingredients: "Tomato, mozzarella, and basil",
+    price: 10,
+    image: "pizzas/margherita.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Salamino Pizza",
+    ingredients: "Tomato, mozzarella, and pepperoni",
+    price: 15,
+    image: "pizzas/salamino.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Prosciutto Pizza",
+    ingredients: "Tomato, mozzarella, ham, aragula and burrata cheese",
+    price: 18,
+    image: "pizzas/prosciutto.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Funghi Pizza",
+    ingredients: "Tomato, mozzarella, mushrooms and onion",
+    price: 12,
+    image: "pizzas/funghi.jpg",
+    soldOut: true,
+  },
+  {
+    name: "Focaccia",
+    ingredients: "Bread with Italian olive oil and rosemary",
+    price: 6, 
+    image: "pizzas/focaccia.jpg",
+    soldOut: false,
+  }
+];
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+function App() { 
+  return (
+      <div className="container">
+          <Header/>
+          <Menu/>
+          <Footer/>
+      </div>
+  );
+}
+
+function Header() {
+  return <h2 style={{ color: "red", fontSize: "60px", textTransform: "uppercase" }}>Luke's Pizza Co.</h2>;
+}
+
+function Pizza({ name, ingredients, price, image, soldOut }) {
+  const pizzaClass = soldOut ? 'pizza sold-out' : 'pizza'; 
+  
+  return (
+    <div className={pizzaClass}>
+      <img src={image} alt={name} />
+      <h3>{name}</h3>
+      <p>{ingredients}</p>
+      <p>${price}</p>
+      {soldOut && <p className="sold-out-text">Sold Out</p>}
+    </div>
+  );
+}
+
+function Menu() {
+  return (
+    <div className="menu">
+      <h2>Our Menu</h2>
+      <p className="tagline">Authentic Italian Cuisine, all from our stone oven</p>
+      <div className="pizza-list">
+        {pizzaData.map((pizza, index) => (
+          <Pizza 
+            key={index}
+            name={pizza.name}
+            ingredients={pizza.ingredients}
+            price={pizza.price}
+            image={pizza.image}
+            soldOut={pizza.soldOut}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Order() {
+  return (
+    <div className="order">
+      <h3>We're currently open</h3>
+      <button className="order-button" onClick={clickAlert}>Order</button>
+    </div>
+  );
+}
+
+const clickAlert = () => {
+  alert('Your order has been placed!');
+}
+
+function Footer() {
+  const currentHour = new Date().getHours();
+  const isOpen = currentHour >= 10 && currentHour < 22;
+
+  return (
+    <footer className="footer">
+      {isOpen ? <Order /> : <h3>We're closed</h3>}
+    </footer>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root")); 
+root.render(<App/>);
