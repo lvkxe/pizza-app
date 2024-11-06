@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
@@ -26,7 +26,7 @@ const pizzaData = [
   },
   {
     name: "Prosciutto Pizza",
-    ingredients: "Tomato, mozzarella, ham, aragula and burrata cheese",
+    ingredients: "Tomato, mozzarella, ham, arugula and burrata cheese",
     price: 18,
     image: "pizzas/prosciutto.jpg",
     soldOut: false,
@@ -41,29 +41,46 @@ const pizzaData = [
   {
     name: "Focaccia",
     ingredients: "Bread with Italian olive oil and rosemary",
-    price: 6, 
+    price: 6,
     image: "pizzas/focaccia.jpg",
     soldOut: false,
   }
 ];
 
-function App() { 
+function App() {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredPizzas = pizzaData.filter((pizza) =>
+    pizza.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-      <div className="container">
-          <Header/>
-          <Menu/>
-          <Footer/>
-      </div>
+    <div className="container">
+      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Menu pizzas={filteredPizzas} />
+      <Footer />
+    </div>
   );
 }
 
-function Header() {
-  return <h2 style={{ color: "red", fontSize: "60px", textTransform: "uppercase" }}>Luke's Pizza Co.</h2>;
+function Header({ searchQuery, setSearchQuery }) {
+  return (
+    <div className="header-container">
+      <h2 className="header-title">Luke's Pizza Co.</h2>
+      <input 
+        type="text" 
+        placeholder="Search..." 
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="search-bar" 
+      />
+    </div>
+  );
 }
 
 function Pizza({ name, ingredients, price, image, soldOut }) {
-  const pizzaClass = soldOut ? 'pizza sold-out' : 'pizza'; 
-  
+  const pizzaClass = soldOut ? 'pizza sold-out' : 'pizza';
+
   return (
     <div className={pizzaClass}>
       <img src={image} alt={name} />
@@ -75,14 +92,14 @@ function Pizza({ name, ingredients, price, image, soldOut }) {
   );
 }
 
-function Menu() {
+function Menu({ pizzas }) {
   return (
     <div className="menu">
       <h2>Our Menu</h2>
       <p className="tagline">Authentic Italian Cuisine, all from our stone oven</p>
       <div className="pizza-list">
-        {pizzaData.map((pizza, index) => (
-          <Pizza 
+        {pizzas.map((pizza, index) => (
+          <Pizza
             key={index}
             name={pizza.name}
             ingredients={pizza.ingredients}
@@ -107,7 +124,7 @@ function Order() {
 
 const clickAlert = () => {
   alert('Your order has been placed!');
-}
+};
 
 function Footer() {
   const currentHour = new Date().getHours();
@@ -120,5 +137,6 @@ function Footer() {
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root")); 
-root.render(<App/>);
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+

@@ -221,6 +221,36 @@ body {
   color: red;
   font-size: 14px;
 }
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header-title {
+  color: red;
+  font-size: 60px;
+  text-transform: uppercase;
+  margin: 0 auto;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.search-bar {
+  padding: 0.8rem 1.2rem;
+  font-size: 1.4rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: #edc84b;
+}
+
 /*
 SPACING SYSTEM (px)
 2 / 4 / 8 / 12 / 16 / 24 / 32 / 40 / 48 / 64 / 80 / 96 / 128
